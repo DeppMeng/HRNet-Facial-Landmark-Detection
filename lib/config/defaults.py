@@ -38,7 +38,7 @@ _C.MODEL.TARGET_TYPE = 'Gaussian'
 _C.MODEL.IMAGE_SIZE = [256, 256]  # width * height
 _C.MODEL.HEATMAP_SIZE = [64, 64]  # width * height
 _C.MODEL.SIGMA = 1.5
-_C.MODEL.EXTRA = CN()
+_C.MODEL.EXTRA = CN(new_allowed=True)
 
 # High-Resoluion Net
 _C.MODEL.EXTRA.PRETRAINED_LAYERS = ['*']
