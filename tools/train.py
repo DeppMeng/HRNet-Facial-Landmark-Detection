@@ -49,7 +49,11 @@ def main():
     cudnn.determinstic = config.CUDNN.DETERMINISTIC
     cudnn.enabled = config.CUDNN.ENABLED
 
-    model = models.get_face_alignment_net(config)
+    # model = models.get_face_alignment_net(config)
+    model = eval('models.'+config.MODEL.NAME+'.get_face_alignment_net')(
+        config, is_train=True
+    )
+
 
     # copy model files
     writer_dict = {
@@ -130,7 +134,7 @@ def main():
              "epoch": epoch + 1,
              "best_nme": best_nme,
              "optimizer": optimizer.state_dict(),
-             }, predictions, is_best, final_output_dir, 'checkpoint_{}.pth'.format(epoch))
+             }, predictions, is_best, final_output_dir)
 
     final_model_state_file = os.path.join(final_output_dir,
                                           'final_state.pth')
