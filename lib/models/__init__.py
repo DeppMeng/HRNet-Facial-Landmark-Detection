@@ -11,5 +11,5 @@ from __future__ import print_function
 
 # from .hrnet import get_face_alignment_net
 
-import models.hrnet
-import models.hr_rnet
+import hrnet
+import hr_rnet
