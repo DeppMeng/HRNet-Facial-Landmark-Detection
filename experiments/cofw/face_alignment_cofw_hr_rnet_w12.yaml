@@ -21,8 +21,8 @@ MODEL:
     - 256
     - 256
   HEATMAP_SIZE:
-    - 64
-    - 64
+    - 128
+    - 128
   EXTRA:
     STAGE1:
       NUM_MODULES: 1
