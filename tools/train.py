@@ -21,6 +21,7 @@ from lib.config import config, update_config
 from lib.datasets import get_dataset
 from lib.core import function
 from lib.utils import utils
+import _init_paths
 
 
 def parse_args():
