@@ -16,8 +16,8 @@ from tensorboardX import SummaryWriter
 from torch.utils.data import DataLoader
 import sys
 import _init_paths
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-import lib.models as models
+# sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+import models
 from lib.config import config, update_config
 from lib.datasets import get_dataset
 from lib.core import function
