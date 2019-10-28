@@ -76,7 +76,8 @@ def main():
             final_output_dir, 'final_state.pth'
         )
         logger.info('=> loading model from {}'.format(model_state_file))
-        model.load_state_dict(torch.load(model_state_file).state_dict())
+        model_state = torch.load(model_state_file)
+        model.load_state_dict(model_state.state_dict())
  
 
     dataset_type = get_dataset(config)
