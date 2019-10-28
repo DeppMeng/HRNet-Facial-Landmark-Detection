@@ -13,8 +13,8 @@ import torch.nn as nn
 import torch.backends.cudnn as cudnn
 from torch.utils.data import DataLoader
 import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-import lib.models as models
+import _init_paths
+import models as models
 from lib.config import config, update_config
 from lib.utils import utils
 from lib.datasets import get_dataset
@@ -51,7 +51,10 @@ def main():
     config.defrost()
     config.MODEL.INIT_WEIGHTS = False
     config.freeze()
-    model = models.get_face_alignment_net(config)
+    # model = models.get_face_alignment_net(config)
+    model = eval('models.'+config.MODEL.NAME+'.get_face_alignment_net')(
+        config, is_train=True
+    )
 
     gpus = list(config.GPUS)
     model = nn.DataParallel(model, device_ids=gpus).cuda()
