@@ -73,14 +73,14 @@ def main():
         # model.load_state_dict(torch.load(args.model_file), strict=False)
         
         model_state = torch.load(args.model_file)
-        model.load_state_dict(model_state.module.state_dict())
+        model.module.load_state_dict(model_state.state_dict())
     else:
         model_state_file = os.path.join(
             final_output_dir, 'final_state.pth'
         )
         logger.info('=> loading model from {}'.format(model_state_file))
         model_state = torch.load(model_state_file)
-        model.load_state_dict(model_state.state_dict())
+        model.module.load_state_dict(model_state)
  
 
     dataset_type = get_dataset(config)
