@@ -27,7 +27,7 @@ def parse_args():
 
     parser.add_argument('--cfg', help='experiment configuration filename',
                         required=True, type=str)
-    parser.add_argument('--model-file', help='model parameters', required=True, type=str)
+    parser.add_argument('--model-file', help='model parameters', type=str)
 
     args = parser.parse_args()
     update_config(config, args)
@@ -60,12 +60,24 @@ def main():
     model = nn.DataParallel(model, device_ids=gpus).cuda()
 
     # load model
-    state_dict = torch.load(args.model_file)
-    if 'state_dict' in state_dict.keys():
-        state_dict = state_dict['state_dict']
-        model.load_state_dict(state_dict)
+    # state_dict = torch.load(args.model_file)
+    # if 'state_dict' in state_dict.keys():
+    #     state_dict = state_dict['state_dict']
+    #     model.load_state_dict(state_dict)
+    # else:
+    #     model.module.load_state_dict(state_dict)
+
+
+    if args.model_file:
+        logger.info('=> loading model from {}'.format(args.model_file))
+        model.load_state_dict(torch.load(args.model_file), strict=False)
     else:
-        model.module.load_state_dict(state_dict)
+        model_state_file = os.path.join(
+            final_output_dir, 'final_state.pth'
+        )
+        logger.info('=> loading model from {}'.format(model_state_file))
+        model.load_state_dict(torch.load(model_state_file))
+ 
 
     dataset_type = get_dataset(config)
 
