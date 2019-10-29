@@ -27,8 +27,8 @@ logger = logging.getLogger(__name__)
 
 def conv3x3(in_planes, out_planes, stride=1):
     """3x3 convolution with padding"""
-    return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
-                     padding=1, bias=False)
+    return nn.Conv2d(in_planes, out_planes, kernel_size=3,
+                     stride=stride, padding=1, bias=False)
 
 
 class BasicBlock(nn.Module):
@@ -198,15 +198,14 @@ class HighResolutionModule(nn.Module):
                     fuse_layer.append(None)
                 else:
                     conv3x3s = []
-                    for k in range(i-j):
+                    for k in range(i - j):
                         if k == i - j - 1:
                             num_outchannels_conv3x3 = num_inchannels[i]
                             conv3x3s.append(nn.Sequential(
                                 nn.Conv2d(num_inchannels[j],
                                           num_outchannels_conv3x3,
                                           3, 2, 1, bias=False),
-                                BatchNorm2d(num_outchannels_conv3x3, 
-                                            momentum=BN_MOMENTUM)))
+                                BatchNorm2d(num_outchannels_conv3x3, momentum=BN_MOMENTUM)))
                         else:
                             num_outchannels_conv3x3 = num_inchannels[j]
                             conv3x3s.append(nn.Sequential(
@@ -308,19 +307,19 @@ class HighResolutionNet(nn.Module):
         self.stage4, pre_stage_channels = self._make_stage(
             self.stage4_cfg, num_channels, multi_scale_output=True)
         
-        last_inp_channels = np.int(np.sum(pre_stage_channels))
+        final_inp_channels = np.int(np.sum(pre_stage_channels))
 
         self.last_layer = nn.Sequential(
             nn.Conv2d(
-                in_channels=last_inp_channels,
-                out_channels=last_inp_channels,
+                in_channels=final_inp_channels,
+                out_channels=final_inp_channels,
                 kernel_size=1,
                 stride=1,
-                padding=0),
-            BatchNorm2d(last_inp_channels, momentum=BN_MOMENTUM),
+                padding=1 if extra.FINAL_CONV_KERNEL == 3 else 0),
+            BatchNorm2d(final_inp_channels, momentum=BN_MOMENTUM),
             nn.ReLU(inplace=True),
             nn.Conv2d(
-                in_channels=last_inp_channels,
+                in_channels=final_inp_channels,
                 out_channels=config.MODEL.NUM_JOINTS,
                 kernel_size=extra.FINAL_CONV_KERNEL,
                 stride=1,
@@ -350,10 +349,10 @@ class HighResolutionNet(nn.Module):
                     transition_layers.append(None)
             else:
                 conv3x3s = []
-                for j in range(i+1-num_branches_pre):
+                for j in range(i + 1 - num_branches_pre):
                     inchannels = num_channels_pre_layer[-1]
                     outchannels = num_channels_cur_layer[i] \
-                        if j == i-num_branches_pre else inchannels
+                        if j == i - num_branches_pre else inchannels
                     conv3x3s.append(nn.Sequential(
                         nn.Conv2d(
                             inchannels, outchannels, 3, 2, 1, bias=False),
