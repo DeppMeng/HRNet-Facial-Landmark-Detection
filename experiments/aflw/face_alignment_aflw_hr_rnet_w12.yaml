@@ -12,10 +12,10 @@ DATASET:
   ROT_FACTOR: 30
 
 MODEL:
-  NAME: 'hrnet'
+  NAME: 'hr_rnet'
   NUM_JOINTS: 19
   INIT_WEIGHTS: true
-  PRETRAINED: 'hrnetv2_pretrained/hrnetv2_w32_imagenet_pretrained.pth'
+  PRETRAINED: 'hrnetv2_pretrained/hr_rnet_bt_w12_imagenet_pretrained.pth.tar'
   SIGMA: 2.5
   IMAGE_SIZE:
     - 256
